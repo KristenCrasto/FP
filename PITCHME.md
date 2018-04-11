@@ -43,6 +43,8 @@ while true
   elif key = RIGHT then pacman.x++
 ```
 
++++
+
 ```haskell
 // functional version
 let rec loop pacman =
@@ -54,19 +56,6 @@ let rec loop pacman =
     case RIGHT: pacman.x + 1, pacman.y
     loop(new pacman(x, y))
 ```
-
----
-
-### FP VS OOP
-
-- Designed to solve different problems
-  - Object-oriented languages are good when you have a fixed set of *operations* on *things*
-  - Functional languages are good when you have a fixed set of *things*, and as your code evolves, you primarily add new operations on existing things.
-- Each have their own complications
-  - Adding a new operation to an object-oriented program may require editing many class definitions to add a new method
-  - Adding a new kind of thing to a functional program may require editing many functions to add a new case
-
-But remember: OOP can co-exist with FP
 
 ---
 
@@ -84,7 +73,11 @@ function impureAdder(x){
 function pureAdder(value, x){
   return value + x;
 }
+```
 
++++
+
+```javascript
 function impureCalculateTax(obj, tax){
   obj.cost *= tax;
   return obj.cost;
@@ -94,8 +87,8 @@ function pureCalculateTax(obj, tax){
   return obj.cost * tax;
 }
 ```
-@[1-8](relies on the current state)
-@[10-17](modifies the scope)
+<!-- @[1-8](relies on the current state)
+@[10-17](modifies the scope) -->
 
 ---
 
@@ -116,8 +109,12 @@ xs.slice(0, 3);
 
 xs.slice(0, 3);
 //=> [1, 2, 3]
+```
 
++++
 
+```javascript
+var xs = [1, 2, 3, 4, 5];
 // impure
 xs.splice(0, 3);
 //=> [1, 2, 3]
@@ -137,6 +134,8 @@ Note:
 ### Side Effects
 
 - A side effect is a change of system state or observable interaction with the outside world that occurs during the calculation of a result.
+
+< insert example >
 
 ---
 
@@ -161,7 +160,7 @@ hi;
 hi('jonas');
 // "Hi jonas"
 ```
-**REWRITE EXAMPLE IN SLANG**
+**REWRITE EXAMPLE IN OTHER LANGUAGE**
 
 ---
 ![Blocks](assets/image/stream.jpg)
@@ -169,23 +168,87 @@ hi('jonas');
 
 #### Map
 
+```java
+List<String> alpha = Arrays.asList("a", "b", "c", "d");
+List<String> upperCase = alpha.stream()
+                        .map(String::toUpperCase)
+                        .collect(Collectors.toList());
+System.out.println(upperCase); //[A, B, C, D]
+```
+
+-iterate over every element in alpha and make it upper case
+
 ---
 
 #### Filter
+
+```Python
+fib = [0,1,1,2,3,5,8,13,21,34,55]
+result = filter(lambda x: x % 2, fib)
+#[1, 1, 3, 5, 13, 21, 55]
+```
+
+-iterates through every element in the list and only returns those that satisfy the condition
 
 ---
 
 #### Reduce
 
+```javascript
+var euros = [29.76, 41.85, 46.5];
+var sum = euros.reduce( function(total, amount){
+  return total + amount
+});
+sum // 118.11
+```
+-iterate over every element in alpha and apply the reducer
+
 ---
 
 ### List Comprehension
+
+```Python
+new_range  = [i * i for i in range(5) if i % 2 == 0]
+
+# You can either use loops:
+squares = []
+
+for x in range(10):
+    squares.append(x**2)
+
+print squares
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# Or you can use list comprehensions to get the same result:
+squares = [x**2 for x in range(10)]
+
+print squares
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+-Simply *result*  = [transform    iteration         filter     ]
+
+---
+
+### FP VS OOP
+
+- Designed to solve different problems
+  - Object-oriented languages are good when you have a fixed set of *operations* on *things*
+  - Functional languages are good when you have a fixed set of *things*, and as your code evolves, you primarily add new operations on existing things.
+
++++
+
+- Each have their own complications
+  - Adding a new operation to an object-oriented program may require editing many class definitions to add a new method
+  - Adding a new kind of thing to a functional program may require editing many functions to add a new case
+
+But remember: OOP can co-exist with FP
 
 ---
 
 ### Benefits of Functional Programming
 
 - Functional code keeps all state held on the stack which allows for easier debugging using the stack trace
+- Easier to avoid repetitive code
 
 ---
 
@@ -201,7 +264,7 @@ hi('jonas');
 
 ### Higher Order Functions
 
-```
+```python
 """
 Decorator Functions/ Higher Order functions
 Take in a function as input and return another function as output
@@ -220,7 +283,7 @@ def memoize(fn, memory):
 
 ### Generic Flow Selection
 
-```
+```python
 def math_strategy(op):
   fns = {
     'add': lambda data: reduce(lambda x,y: x + y, data),
@@ -234,7 +297,7 @@ def math_strategy(op):
 
 ### Currying
 
-'''
+```python
 def addTwo(x, y):
   return x + y
 
@@ -245,32 +308,34 @@ def addCurry(x):
 
 print addTwo(1, 1) #2
 print addCurry(1)(1) #2
-'''
+```
 
 ---
 
 ### Pipeline
 
-```
+```python
 def pipeline(data, fns):
   return reduce(lambda data, fns: map(fns, data), fns, data)
 ```
+-difference in java where your pipeline is the stream
 
 ---
 
 ### Resources
 
-java
+Java
+- https://www.manning.com/books/java-8-in-action
 
-python
+Python
 - https://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming
 
-javascript
+Javascript
 - https://drboolean.gitbooks.io/mostly-adequate-guide-old/content/ch4.html#more-than-a-pun--special-sauce
 - http://reactivex.io/learnrx/
 
 ---
-```
+<!-- ```
 getActiveAccount();
 getActiveAccounts();
 getActiveAccountInfo();
@@ -672,4 +737,4 @@ Note:
 ---
 
 ## Thank you!
-### Be sure to check out the rest of our classes!
+### Be sure to check out the rest of our classes! -->
