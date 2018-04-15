@@ -13,10 +13,6 @@
 - Design Patterns
 - **Functional Programming**
 
-Note:
-Inspiration: Great information out there for our profession that we never got taught.
-Goal: Walk away from here with knowledge thats immediately applicable to your coding.
-
 ---
 
 ### Goals
@@ -98,7 +94,7 @@ function pureCalculateTax(obj, tax){
 - The basic strategy here is to create functions that take in a state and return a new state
 
 ```javascript
-var xs = [1, 2, 3, 4, 5];
+const xs = [1, 2, 3, 4, 5];
 
 // pure
 xs.slice(0, 3);
@@ -134,39 +130,53 @@ Note:
 ### Side Effects
 
 - A side effect is a change of system state or observable interaction with the outside world that occurs during the calculation of a result.
+- printf() and similar functions are impure because it causes output to an I/O device as a side effect.
 
-< insert example >
+```java
+Class Person{
+  int age;
+
+  public void updateAge(int age){
+    this.age = age;
+  }
+}
+```
 
 ---
 
-### First Class Functions
+### Functions As First Class Citizens
 
 - Functions are treated the **same as any other data type** - they may be stored in arrays, passed around as function parameters, assigned to variables, etc
 
-```javascript
-var hi = function(name) {
-  return 'Hi ' + name;
-};
+```python
+def shout(text):
+    return text.upper()
 
-var greeting = function(name) {
-  return hi(name);
-};
+def whisper(text):
+    return text.lower()
 
-hi;
-// function(name) {
-//  return 'Hi ' + name
-// }
+def greet(func):
+    # storing the function in a variable
+    greeting = func("Hi")
+    print greeting
 
-hi('jonas');
-// "Hi jonas"
+print shout('Hello') //output: HELLO
+yell = shout
+print yell('Hello') //output: HELLO
+
+
+greet(shout) //output: HI
+greet(whisper) //output: hi
 ```
-**REWRITE EXAMPLE IN OTHER LANGUAGE**
 
 ---
+### Map, Filter, and Reduce
 ![Blocks](assets/image/stream.jpg)
 ---
 
 #### Map
+- Iterate over every element and transform it in some way
+- The size of the list will not change
 
 ```java
 List<String> alpha = Arrays.asList("a", "b", "c", "d");
@@ -176,11 +186,12 @@ List<String> upperCase = alpha.stream()
 System.out.println(upperCase); //[A, B, C, D]
 ```
 
--iterate over every element in alpha and make it upper case
-
 ---
 
-#### Filter
+### Filter
+- Iterates over every element and only return those that satisfy the condition
+- The size of the list will be equal to or less than the original list
+
 
 ```Python
 fib = [0,1,1,2,3,5,8,13,21,34,55]
@@ -188,28 +199,28 @@ result = filter(lambda x: x % 2, fib)
 #[1, 1, 3, 5, 13, 21, 55]
 ```
 
--iterates through every element in the list and only returns those that satisfy the condition
 
 ---
 
-#### Reduce
+### Reduce
+- Iterate over every element and apply the reducer while acculumulating a final value
 
 ```javascript
-var euros = [29.76, 41.85, 46.5];
-var sum = euros.reduce( function(total, amount){
+const euros = [29.76, 41.85, 46.5];
+const sum = euros.reduce( function(total, amount){
   return total + amount
 });
 sum // 118.11
 ```
--iterate over every element in alpha and apply the reducer
+
++++
 
 ---
+![Blocks](assets/image/map-filter-reduce.png)
+---
 
-### List Comprehension
-
+### List Comprehension (Python specific)
 ```Python
-new_range  = [i * i for i in range(5) if i % 2 == 0]
-
 # You can either use loops:
 squares = []
 
@@ -225,30 +236,24 @@ squares = [x**2 for x in range(10)]
 print squares
 [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 ```
--Simply *result*  = [transform    iteration         filter     ]
-
----
-
-### FP VS OOP
-
-- Designed to solve different problems
-  - Object-oriented languages are good when you have a fixed set of *operations* on *things*
-  - Functional languages are good when you have a fixed set of *things*, and as your code evolves, you primarily add new operations on existing things.
-
 +++
-
-- Each have their own complications
-  - Adding a new operation to an object-oriented program may require editing many class definitions to add a new method
-  - Adding a new kind of thing to a functional program may require editing many functions to add a new case
-
-But remember: OOP can co-exist with FP
+```Python
+new_range  = [i * i for i in range(5) if i % 2 == 0]
+print new_range
+[0, 4, 16]
+```
+-Simply *result*  = [transform    iteration         filter     ]
 
 ---
 
 ### Benefits of Functional Programming
 
+- Easier to reason about pure functions
+- Pure function signatures are meaningful
+- Testing is easier
 - Functional code keeps all state held on the stack which allows for easier debugging using the stack trace
 - Easier to avoid repetitive code
+- Parallel/ Concurrent programming is easier
 
 ---
 
@@ -256,9 +261,18 @@ But remember: OOP can co-exist with FP
 
 ---
 
+### Intro Solutions
+
+---
+
 ### Advanced Topics
-- Technically mathematical
-- writing what a program is supposed to do in a form of equations defining new values (note: not variables) as functions of previously defined values
+- FP is based on lambda calculus
+- Built on three things
+  - Variables
+  - A way of building functions
+  - A way of applying functions
+
+<insert picture>
 
 ---
 
@@ -266,10 +280,8 @@ But remember: OOP can co-exist with FP
 
 ```python
 """
-Decorator Functions/ Higher Order functions
 Take in a function as input and return another function as output
 """
-#Implement Memoize
 def memoize(fn, memory):
   def helper(*args):
     if args not in memory:
@@ -281,21 +293,8 @@ def memoize(fn, memory):
 
 ---
 
-### Generic Flow Selection
-
-```python
-def math_strategy(op):
-  fns = {
-    'add': lambda data: reduce(lambda x,y: x + y, data),
-    'subtract': lambda data: reduce(lambda x,y: x - y, data),
-    'multiply': lambda data: reduce(lambda x,y: x * y, data)
-  }
-  return fns.get(op)
-```
-
----
-
 ### Currying
+- Currying is a way of constructing functions that allows partial application of a function’s arguments
 
 ```python
 def addTwo(x, y):
@@ -308,17 +307,42 @@ def addCurry(x):
 
 print addTwo(1, 1) #2
 print addCurry(1)(1) #2
+
+addOne = addCurry(1)
+print addOne(1) #2
 ```
 
 ---
 
 ### Pipeline
+- Taking an input and transforming it through a list of operations
 
 ```python
 def pipeline(data, fns):
   return reduce(lambda data, fns: map(fns, data), fns, data)
 ```
--difference in java where your pipeline is the stream
+
++++
+
+### Pipelining in Java
+
+- In Java, your stream can be considered your pipeline for list operations
+- A stream has operations that are Intermediate and Terminal
+
+```java
+List<String> myList =
+    Arrays.asList("a1", "a2", "b1", "c2", "c1");
+
+myList
+    .stream()
+    .filter(s -> s.startsWith("c")) //intermediate
+    .map(String::toUpperCase)       //intermediate
+    .sorted()                       //intermediate
+    .forEach(System.out::println);  //terminal
+
+// C1
+// C2
+```
 
 ---
 
@@ -331,7 +355,7 @@ Python
 - https://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming
 
 Javascript
-- https://drboolean.gitbooks.io/mostly-adequate-guide-old/content/ch4.html#more-than-a-pun--special-sauce
+- https://mostly-adequate.gitbooks.io/mostly-adequate-guide/
 - http://reactivex.io/learnrx/
 
 ---
