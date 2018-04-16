@@ -83,8 +83,6 @@ function pureCalculateTax(obj, tax){
   return obj.cost * tax;
 }
 ```
-<!-- @[1-8](relies on the current state)
-@[10-17](modifies the scope) -->
 
 ---
 
@@ -263,6 +261,30 @@ print new_range
 
 ### Intro Solutions
 
+```Java
+//Given a list of names, change them to say "Hi <name>"
+public static List<String> sayHi(List<String> names){
+  return names.stream()
+    .map(name -> "Hi " + name)
+    .collect(Collectors.toList());
+}
+```
+
++++
+
+```python
+#Given a list of names, only return those longer than 5 characters
+def longNames(names):
+  return filter(lambda x: len(x) > 5, names)
+```
+
++++
+
+```Python
+#Given a function and its arguments, return its result
+def apply(fn, *args):
+  return fn(*args)
+```
 ---
 
 ### Advanced Topics
@@ -320,6 +342,11 @@ print addOne(1) #2
 ```python
 def pipeline(data, fns):
   return reduce(lambda data, fns: map(fns, data), fns, data)
+
+print pipeline([1,2,3],
+  [lambda x: x + 1,
+   lambda x: x * 100])
+#[200, 300, 400]
 ```
 
 +++
