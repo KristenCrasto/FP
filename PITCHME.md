@@ -159,7 +159,11 @@ def greet(func):
     # storing the function in a variable
     greeting = func("Hi")
     print greeting
+```
 
++++
+
+```python
 print shout('Hello') //output: HELLO
 yell = shout
 print yell('Hello') //output: HELLO
@@ -216,6 +220,9 @@ sum // 118.11
 +++
 
 ```Python
+"""
+Group objects by the value of key
+"""
 def groupBy(data, key):
   def helper(acc, obj):
     category = obj.get(key)
