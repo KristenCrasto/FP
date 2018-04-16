@@ -146,6 +146,8 @@ Class Person{
 
 - Functions are treated the **same as any other data type** - they may be stored in arrays, passed around as function parameters, assigned to variables, etc
 
++++
+
 ```python
 def shout(text):
     return text.upper()
@@ -213,6 +215,17 @@ sum // 118.11
 
 +++
 
+```Python
+def groupBy(data, key):
+  def helper(acc, obj):
+    category = obj.get(key)
+    array = list(acc.get(category, []))
+    acc[category] = array + [obj]
+    return acc
+
+  return reduce(helper, data, {})
+```
+
 ---
 ![Blocks](assets/image/map-filter-reduce.png)
 ---
@@ -273,7 +286,8 @@ public static List<String> sayHi(List<String> names){
 +++
 
 ```python
-#Given a list of names, only return those longer than 5 characters
+#Given a list of names, only return those
+#longer than 5 characters
 def longNames(names):
   return filter(lambda x: len(x) > 5, names)
 ```
